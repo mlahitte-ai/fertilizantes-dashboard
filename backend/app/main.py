@@ -6,11 +6,13 @@ from app.core.config import settings
 from app.db.database import init_db
 from app.api.routes import prices, ratio, sources, ai
 from app.core.scheduler import start_scheduler, stop_scheduler
+from app.scrapers.seed_historical import seed
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await seed()
     start_scheduler()
     yield
     stop_scheduler()
